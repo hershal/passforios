@@ -29,14 +29,15 @@ class PasswordTableViewCell: UITableViewCell {
         textLabel?.adjustsFontForContentSizeCategory = true
 
         accessoryType = .none
+        imageView?.image = UIImage(systemName: "lock.doc")
         detailTextLabel?.textColor = UIColor.lightGray
         detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         detailTextLabel?.adjustsFontForContentSizeCategory = true
+        detailTextLabel?.text = formatDate(entry.passwordEntity.getLastUpdateDate())
 
-        if !entry.isDir {
-            detailTextLabel?.text = formatDate(entry.passwordEntity.getLastUpdateDate())
-        } else {
+        if entry.isDir {
             accessoryType = .disclosureIndicator
+            imageView?.image = UIImage(systemName: "folder.fill")
 
             let count = entry.passwordEntity.children?.count ?? 0
 
