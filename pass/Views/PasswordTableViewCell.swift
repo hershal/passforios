@@ -31,7 +31,6 @@ class PasswordTableViewCell: UITableViewCell {
         accessoryType = .none
         imageView?.image = UIImage(systemName: "lock.doc")
         detailTextLabel?.textColor = UIColor.lightGray
-        detailTextLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         detailTextLabel?.adjustsFontForContentSizeCategory = true
         detailTextLabel?.text = formatDate(entry.passwordEntity.getLastUpdateDate())
 

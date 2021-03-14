@@ -245,7 +245,9 @@ class PasswordDetailTableViewController: UITableViewController, UIGestureRecogni
         if let login = password.login {
             section.item.append(Constants.LOGIN_KEYWORD => login)
         }
-        section.item.append(Constants.PASSWORD_KEYWORD => password.password)
+        if !password.password.isEmpty {
+            section.item.append(Constants.PASSWORD_KEYWORD => password.password)
+        }
         tableData.append(section)
 
         // addition section
