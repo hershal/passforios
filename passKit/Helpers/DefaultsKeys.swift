@@ -47,7 +47,7 @@ public extension DefaultsKeys {
     var isTouchIDOn: DefaultsKey<Bool> { .init("isTouchIDOn", defaultValue: false) }
 
     var isHideUnknownOn: DefaultsKey<Bool> { .init("isHideUnknownOn", defaultValue: false) }
-    var isHideOTPOn: DefaultsKey<Bool> { .init("isHideOTPOn", defaultValue: false) }
+    var isHideOTPOn: DefaultsKey<Bool> { .init("isHideOTPOn", defaultValue: true) }
     var isRememberPGPPassphraseOn: DefaultsKey<Bool> { .init("isRememberPGPPassphraseOn", defaultValue: false) }
     var isRememberGitCredentialPassphraseOn: DefaultsKey<Bool> { .init("isRememberGitCredentialPassphraseOn", defaultValue: false) }
     var isEnableGPGIDOn: DefaultsKey<Bool> { .init("isEnableGPGIDOn", defaultValue: false) }
