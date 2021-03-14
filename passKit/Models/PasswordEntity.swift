@@ -42,6 +42,10 @@ public extension PasswordEntity {
         throw AppError.unknown
     }
 
+    func getLastUpdateDate() -> Date {
+        lastUpdatedDate ?? Date()
+    }
+
     // XXX: define some getters to get core data, we need to consider
     // manually write models instead auto generation.
 

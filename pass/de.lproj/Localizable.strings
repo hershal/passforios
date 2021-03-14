@@ -177,6 +177,7 @@
 // Time related
 "Unknown"   = "Unbekannt";
 "JustNow"   = "Gerade eben";
+"Yesterday" = "Gestern";
 
 // Commit messages
 "AddPassword."     = "Add password for %@ to store using Pass for iOS.";
@@ -230,6 +231,10 @@
 "CannotOpenMail"    = "Mail-App kann nicht geöffnet werden";
 "CopiedEmail"       = "E-Mail-Adresse %@ kopiert";
 "HttpNotSupported." = "Verbindungen über HTTP werden nicht unterstützt.";
+
+// Password navigation
+"Item"  = "Artikel";
+"Items" = "Artikel";
 
 // Password view
 "Name"                          = "Name";

@@ -8,12 +8,14 @@
 
 import Foundation
 
-public class PasswordTableEntry: NSObject {
+public class PasswordTableEntry {
     public let passwordEntity: PasswordEntity
     @objc public let title: String
     public let isDir: Bool
     public let synced: Bool
     public let categoryText: String
+    public let lastUpdatedDate: Date
+    private let passwordStore = PasswordStore.shared
 
     public init(_ entity: PasswordEntity) {
         self.passwordEntity = entity
@@ -21,6 +23,7 @@ public class PasswordTableEntry: NSObject {
         self.isDir = entity.isDir
         self.synced = entity.synced
         self.categoryText = entity.getCategoryText()
+        self.lastUpdatedDate = entity.getLastUpdateDate()
     }
 
     public func match(_ searchText: String) -> Bool {

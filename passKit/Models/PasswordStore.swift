@@ -241,6 +241,43 @@ public class PasswordStore {
         }
     }
 
+    public func getLastUpdatedDate(gitPath: String) -> Date? {
+        guard let storeRepository = storeRepository else {
+            return nil
+        }
+        guard let blameHunks = try? storeRepository.blame(withFile: gitPath, options: nil).hunks else {
+            return nil
+        }
+        guard let latestCommitTime = blameHunks.map({ $0.finalSignature?.time?.timeIntervalSince1970 ?? 0 }).max() else {
+            return nil
+        }
+        return Date(timeIntervalSince1970: latestCommitTime)
+    }
+
+    private func getLastUpdatedDate(entity: PasswordEntity) -> Date? {
+        if entity.isDir {
+            var files = [String]()
+
+            for ent in entity.children as! Set<PasswordEntity> {
+                files.append(ent.getPath())
+            }
+
+            let date = files
+                .map { path -> Date? in getLastUpdatedDate(gitPath: path) }
+                .filter { $0 != nil }
+                .map { date -> Date in date! }
+                .reduce(Date.distantPast) { (result: Date, date: Date) -> Date in
+                    if result.timeIntervalSince(date) > 0 {
+                        return date
+                    }
+                    return result
+                }
+            return date
+        }
+
+        return getLastUpdatedDate(gitPath: entity.getPath())
+    }
+
     private func updatePasswordEntityCoreData() {
         deleteCoreData(entityName: "PasswordEntity")
         do {
@@ -284,6 +321,7 @@ public class PasswordStore {
                         entities += files
                     } else {
                         entity.isDir = false
+                        entity.lastUpdatedDate = getLastUpdatedDate(gitPath: entity.getPath())
                     }
                 }
             }

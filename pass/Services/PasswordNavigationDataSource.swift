@@ -19,7 +19,7 @@ class PasswordNavigationDataSource: NSObject, UITableViewDataSource {
     var filteredSections: [Section]
 
     var isSearchActive = false
-    let hideSectionHeaderThreshold = 6
+    let hideSectionHeaderThreshold = 10
 
     init(entries: [PasswordTableEntry] = []) {
         self.sections = buildSections(from: entries)
@@ -54,7 +54,10 @@ class PasswordNavigationDataSource: NSObject, UITableViewDataSource {
     }
 
     func showSectionTitles() -> Bool {
-        !isSearchActive && filteredSections.count > hideSectionHeaderThreshold
+        !isSearchActive &&
+            sections.reduce(0) { (count: Int, section: Section) -> Int in
+                count + section.entries.count
+            } > hideSectionHeaderThreshold
     }
 
     func getPasswordTableEntry(at indexPath: IndexPath) -> PasswordTableEntry {

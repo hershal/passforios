@@ -180,6 +180,7 @@
 // Time related
 "Unknown"   = "Unknown";
 "JustNow"   = "Just now";
+"Yesterday" = "Yesterday";
 
 // Commit messages
 "AddPassword."     = "Add password for %@ to store using Pass for iOS.";
@@ -233,6 +234,10 @@
 "CannotOpenMail"    = "Cannot open Mail app";
 "CopiedEmail"       = "Copied email %@";
 "HttpNotSupported." = "HTTP connection is not supported.";
+
+// Password navigation
+"Item"  = "Item";
+"Items" = "Items";
 
 // Password view
 "Name"                          = "Name";
