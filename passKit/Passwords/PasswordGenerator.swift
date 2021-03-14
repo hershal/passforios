@@ -27,10 +27,10 @@ public struct PasswordGenerator: Codable {
     }()
 
     public var flavor = PasswordGeneratorFlavor.random
-    public var length = 15
+    public var length = 20
     public var varyCases = true
     public var useDigits = true
-    public var useSpecialSymbols = true
+    public var useSpecialSymbols = false
     public var groups = 4
 
     public var limitedLength: Int {
