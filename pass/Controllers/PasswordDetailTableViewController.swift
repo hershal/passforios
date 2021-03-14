@@ -20,6 +20,13 @@ class PasswordDetailTableViewController: UITableViewController, UIGestureRecogni
     private let passwordStore = PasswordStore.shared
     private let keychain = AppKeychain.shared
 
+    private static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter
+    }()
+
     private lazy var editUIBarButtonItem: UIBarButtonItem = {
         let uiBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(pressEdit(_:)))
         return uiBarButtonItem
@@ -476,12 +483,39 @@ class PasswordDetailTableViewController: UITableViewController, UIGestureRecogni
             footerLabel.numberOfLines = 0
             footerLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
             footerLabel.textColor = UIColor.gray
-            let dateString = passwordStore.getLatestUpdateInfo(filename: password!.url.path)
-            footerLabel.text = "LastUpdated".localize(dateString)
+
+            let latestHunk = passwordStore.getLatestBlameHunk(filename: password!.url.path)
+
+            if latestHunk != nil {
+                let dateString = getLatestUpdateDate(blameHunk: latestHunk!)
+                let shaString = getLatestUpdateSHA(blameHunk: latestHunk!)
+                footerLabel.text = "LastUpdated".localize(dateString)
+                    .appending("\n")
+                    .appending("SHA".localize(shaString))
+            }
             view.addSubview(footerLabel)
             return view
         }
         return nil
+    }
+
+    private func getLatestUpdateSHA(blameHunk: GTBlameHunk) -> String {
+        guard let formattedSHA = blameHunk.finalCommitOID?.sha else {
+            return "Unknown".localize()
+        }
+        return formattedSHA
+    }
+
+    private func getLatestUpdateDate(blameHunk: GTBlameHunk) -> String {
+        guard let latestCommitTime = blameHunk.finalSignature?.time?.timeIntervalSince1970 else {
+            return "Unknown".localize()
+        }
+        let lastCommitDate = Date(timeIntervalSince1970: latestCommitTime)
+        if Date().timeIntervalSince(lastCommitDate) <= 60 {
+            return "JustNow".localize()
+        }
+
+        return PasswordDetailTableViewController.dateFormatter.string(from: lastCommitDate)
     }
 
     override func tableView(_: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender _: Any?) {

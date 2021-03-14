@@ -256,6 +256,7 @@
 "CounterUpdated"                = "Zähler hochgezählt";
 "CannotFindValidUrl"            = "Gültige URL kann nicht gefunden werden";
 "LastUpdated"                   = "Zuletzt aktualisiert: %@";
+"SHA"                           = "SHA: %@";
 "PasswordCopiedToPasteboard."   = "Passwort kopiert. Es bleibt 45 Sekunden im Cache.";
 
 // Password editor

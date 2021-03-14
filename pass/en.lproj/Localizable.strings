@@ -259,6 +259,7 @@
 "CounterUpdated"                = "Counter Updated";
 "CannotFindValidUrl"            = "Cannot find a valid URL";
 "LastUpdated"                   = "Last Updated: %@";
+"SHA"                           = "SHA: %@";
 "PasswordCopiedToPasteboard."   = "Password copied. We will clear the pasteboard in 45 seconds.";
 
 // Password editor

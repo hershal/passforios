@@ -15,13 +15,6 @@ import UIKit
 
 public class PasswordStore {
     public static let shared = PasswordStore()
-    private static let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .short
-        return dateFormatter
-    }()
-
     public var storeURL: URL
     public var tempStoreURL: URL {
         URL(fileURLWithPath: "\(storeURL.path)-temp")
@@ -404,21 +397,23 @@ public class PasswordStore {
         }
     }
 
-    public func getLatestUpdateInfo(filename: String) -> String {
+    public func getLatestBlameHunk(filename: String) -> GTBlameHunk? {
         guard let storeRepository = storeRepository else {
-            return "Unknown".localize()
+            return nil
         }
         guard let blameHunks = try? storeRepository.blame(withFile: filename, options: nil).hunks else {
-            return "Unknown".localize()
+            return nil
         }
-        guard let latestCommitTime = blameHunks.map({ $0.finalSignature?.time?.timeIntervalSince1970 ?? 0 }).max() else {
-            return "Unknown".localize()
+
+        return blameHunks.reduce(blameHunks.first!) { latestCommitHunk, currentHunk -> GTBlameHunk in
+            let currentTimeSignature = currentHunk.finalSignature?.time?.timeIntervalSince1970 ?? 0
+            let latestTimeSignature = latestCommitHunk.finalSignature?.time?.timeIntervalSince1970 ?? 0
+
+            if currentTimeSignature > latestTimeSignature {
+                return currentHunk
+            }
+            return latestCommitHunk
         }
-        let lastCommitDate = Date(timeIntervalSince1970: latestCommitTime)
-        if Date().timeIntervalSince(lastCommitDate) <= 60 {
-            return "JustNow".localize()
-        }
-        return PasswordStore.dateFormatter.string(from: lastCommitDate)
     }
 
     public func updateRemoteRepo() {}
